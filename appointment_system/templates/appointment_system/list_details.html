@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Details</title>
+</head>
+
+<body>
+    <h3>Doctor Details</h3>
+    <table>
+    <tr>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Age</td>
+        <td>Doctor Field</td>
+        <td>Managed By</td>
+    </tr>
+    {% for x in context %}
+    <tr>
+        <td>{{x.doctor.username}}</td>
+        <td>{{x.doctor.email}}</td>
+        <td>{{x.doctor.age}}</td>
+        <td>{{x.doctor_field}}</td>
+        <td>{{x.managed_by}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</body>
+
+</html>

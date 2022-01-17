@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Tables</title>
+</head>
+<body>
+    {% if request.user.is_superuser %}
+    {% if context %}
+    <h3>Appointments</h3>
+    <table>
+    <tr>
+    <td>Appointment Date</td>
+    <td>Patient Name</td>
+    <td>Doctor Name</td>
+    <td>Appointment Details</td>
+    {% comment %} <td></td>
+    <td></td> {% endcomment %}
+    </tr>
+    {% for x in context %}
+    <tr>
+    <td>{{x.appointment_date}}</td>
+    <td>{{x.patient.patient.username}}</td>
+    <td>{{x.doctor.doctor.username}}</td>
+    <td>{{x.appointment_details}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+    {% endif %}
+</body>
+</html>

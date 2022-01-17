@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+</head>
+
+<body>
+        {% if request.user.is_authenticated and request.user.is_superuser %}
+        <h2> Admin Scenarios </h2> <br>
+        <p>
+                Name: {{request.user.username}} <br>
+                {% if request.user.age %}
+                Age: {{request.user.age}} <br>
+                {% endif %}
+                Email: {{request.user.email}} <br>
+                Super User Status: {{request.user.is_superuser}} <br>
+                {% if request.user.admin.admin_rank %}
+                Admin Rank: {{request.user.admin.admin_rank}} <br>
+                {% endif %}
+        </p>
+        <h5>
+                ADMIN <br><br>
+                <a href="/appointmentx/admin/sign-up/">CREATE NEW ADMIN </a> <br>
+                <a href="/appointmentx/admin/update/">UPDATE YOUR DATA</a> <br>
+                <a href="/appointmentx/admin/all/">VIEW ALL ADMIN</a> <br>
+                <a href="/appointmentx/user/delete">DELETE</a><br> <br>
+                <hr>
+                DOCTOR <br> <br>
+                <a href="/appointmentx/doctor/sign-up/"> NEW DOCTOR</a><br>
+                <a href="/appointmentx/doctor/all/">VIEW ALL DOCTOR</a> <br>
+                {% if context != None %}
+                Change Doctor Manager Status<br> <br>
+                {% for x in context %}
+                <a href="{% url 'appointment_system:change_manager' x.id %}">{{x}}</a> <br>
+                {% endfor %}
+                {% endif %}
+                <hr>
+                APPOINTMENT <br> <br>
+                <a href="/appointmentx/appointment/all/">Show all Appointments</a><br>
+        </h5>
+        {% elif request.user.is_authenticated and request.user.is_doctor %}
+        <h2>Doctor Scenarios</h2> <br>
+        <p>
+                Name: {{request.user.username}} <br>
+                {% if request.user.age %}
+                Age: {{request.user.age}} <br>
+                {% endif %}
+                Email: {{request.user.email}} <br>
+                Nmc Number: {{request.user.doctor.nmc_number}} <br>
+                Doctor Field: {{request.user.doctor.doctor_field}} <br>
+                Doctor Qualification: {{request.user.doctor.doctor_qualification}} <br>
+
+
+        </p>
+        <h5>
+                DOCTOR <br><br>
+                <a href="/appointmentx/doctor/update/">Update Doctor Data</a><br>
+                <a href="/appointmentx/doctor/details/"> Doctor Details</a> <br>
+                <a href="/appointmentx/user/delete">Delete doctor</a><br> <br>
+                <hr>
+                appointments <br>
+                <a href="/appointmentx/doctor/appointments/">View All Appointments</a>
+
+        </h5>
+        {% elif  request.user.is_authenticated and not request.user.is_doctor and not request.user.is_superuser%}
+        <h2> PATIENT SCENARIOS</h2> <br>
+        <p>
+                Name: {{request.user.username}} <br>
+                {% if request.user.age %}
+                Age: {{request.user.age}} <br>
+                {% endif %}
+                Email: {{request.user.email}} <br>
+                Gender: {{request.user.patient.patient_gender}} <br>
+                Blood Group: {{request.user.patient.blood_group}} <br>
+
+        </p>
+        <p>
+                PATIENT <br><br>
+
+                <a href="/appointmentx/patient/update/">Update Patient Detials</a><br>
+                <a href="/appointmentx/patient/details/">Retrieve Patient Details</a> <br>
+                <a href="/appointmentx/user/delete/">Delete Patient</a><br> <br>
+
+                <hr>
+                APPOINTMENT <br> <br>
+                <a href="/appointmentx/appointment/create/">Register New Appointment</a> <br>
+                Pending Appointments
+                <table>
+                        {% comment %} {% for x in context %} {% endcomment %}
+                        <tr>
+                                <td>appointment date</td>
+                                <td>appointment details</td>
+                                <td>Doctor's Name</td>
+                                <td>Field</td>
+                                <td>Action </td>
+                        </tr>
+                        {% for x in context %}
+                        <tr>
+                                <td>{{x.appointment_date}}</td>
+                                <td>{{x.appointment_details}}</td>
+                                <td>{{x.doctor.doctor.username}}</td>
+                                <td>{{x.doctor.doctor_field}}</td>
+                                <td>
+                                <a href="{% url 'appointment_system:change_appointment' x.id %}">Change Appointment</a> 
+                                <a href="{% url 'appointment_system:cancel_appointment' x.id %}">Delete Appointment</a>
+                                </td>
+                        </tr>
+                        {% empty %}
+                        No Appointment Remaining
+                        {% endfor %}
+                </table>
+                <hr>
+                REPORT <br> <br>
+                <a href="/appointmentx/report/view/">View Reports</a>
+        </p>
+        {% elif not request.user.is_authenticated %}
+        <h3> Unauthorized acess to the dashboard</h3>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <a href="/appointmentx/user/update/">Change Password</a> <br> <br>
+        <a href="/appointmentx/logout/">Logout</a><br>
+        {% endif %}
+</body>
+
+</html>

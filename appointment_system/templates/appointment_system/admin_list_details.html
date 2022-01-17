@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Details</title>
+</head>
+
+<body>
+    {% if  request.user.is_superuser%}
+    <h3>Admin List</h3>
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Age</td>
+            <td>Admin Rank</td>
+        </tr>
+        {% for x in context %}
+        <tr>
+            <td>{{x.admin.username}}</td>
+            <td>{{x.admin.email}}</td>
+            <td>{{x.admin.age}}</td>
+            <td>{{x.admin_rank}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% elif  request.user.is_doctor %}
+    <h3> Appointment List </h3>
+    <table>
+        <tr>
+            <td>appointment date</td>
+            <td>appointment details</td>
+            <td> Patient Name</td>
+            <td>Patient Age</td>
+            <td>Patient Gender</td>
+            <td>Patient Blood Group</td>
+            <td>Action </td>
+        </tr>
+        {% for x in context %}
+        <tr>
+            <td>{{x.appointment_date}}</td>
+            <td>{{x.appointment_details}}</td>
+            <td> {{x.patient.patient.username}}</td>
+            <td>{{x.patient.patient.age}}</td>
+            <td>{{x.patient.patient_gender}}</td>
+            <td>{{x.patient.blood_group}}</td>
+            <td><a href="{% url 'appointment_system:create_report' x.id %}">Create Report</a> </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% elif  not request.user.is_doctor  and not request.user.is_superuser %}
+    <table>
+        <tr>
+        <td>Appointment Date</td>
+        <td>Appointment Details</td>
+        <td>Prescriptions</td>
+        <td>Report Details</td>
+        </tr>
+        {% for x in context %}
+        <tr>
+        <td>{{x.appointment_date}}</td>
+        <td>{{x.appointment_details}}</td>
+        <td>{{x.report.prescription_name}}</td>
+        <td>{{x.report.report_details}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+
+</html>

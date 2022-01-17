@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+</head>
+
+<body>
+    {% if  request.user.is_authenticated and request.user.is_doctor%}
+    Name: {{context.doctor.username}} <br>
+    Age: {{context.doctor.age}} <br>
+    Email : {{context.doctor.email}} <br>
+    nmc_number: {{context.nmc_number}} <br>
+    Qualification: {{context.doctor_qualification}} <br>
+    Field: {{context.doctor_field}} <br>
+    Doctor's Administrator: {{context.managed_by.username}} <br>
+
+    UPDATE DETAILS <br>
+    DELETE INSTANCE
+    {% elif request.user.is_authenticated and not request.user.is_doctor and not request.user.is_superuser %} 
+    Name: {{context.patient.username}} <br>
+    Age: {{context.patient.age}} <br>
+    Email: {{context.patient.email}} <br>
+    Gender: {{context.patient_gender}} <br>
+    Group: {{context.blood_group}} <br>
+    {% elif not request.user.is_authenticated%}
+    Not authorized
+    {% endif %}
+
+</body>
+
+</html>
